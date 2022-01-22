@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.transportcegiel.LoginController">
+    <children>
+        <TextField fx:id="txtUserName" layoutX="115.0" layoutY="109.0" prefHeight="30.0" prefWidth="170.0" promptText="User Name" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+        <PasswordField fx:id="txtPassword" layoutX="115.0" layoutY="159.0" prefHeight="30.0" prefWidth="170.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+        <Button layoutX="115.0" layoutY="224.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #0598ff;" text="Log In" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Button>
+        <Label fx:id="lblStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="286.0" prefHeight="18.0" prefWidth="200.0">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font></Label>
+        <Label alignment="CENTER" layoutY="14.0" prefHeight="31.0" prefWidth="400.0" text="SYMULATOR TAŚMY TRANSPORTOWEJ">
+            <font>
+                <Font size="21.0" />
+            </font>
+        </Label>
+        <Label layoutX="110.0" layoutY="58.0" text="Zaloguj się do aplikacji">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Hyperlink fx:id="link" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="330.0" prefWidth="200.0" text="Forgot your password?" />
+    </children>
+</AnchorPane>
