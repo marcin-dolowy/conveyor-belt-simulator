@@ -1,6 +1,5 @@
 package com.example.transportcegiel;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,7 +24,7 @@ public class LoginController {
     private TextField txtUserName;
 
     @FXML
-    void login(ActionEvent event) throws IOException {
+    void login() throws IOException {
         if (txtUserName.getText().equals("admin") && txtPassword.getText().equals("admin123")) {
             lblStatus.setText("Login successful.");
 

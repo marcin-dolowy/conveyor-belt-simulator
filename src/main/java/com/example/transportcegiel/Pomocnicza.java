@@ -5,13 +5,12 @@ public class Pomocnicza {
     private int obecnaMasa;
     private boolean czy_wolne;
 
-
-    //private int maxIlosc;
     public Pomocnicza(int zaladowanie, int obecnaMasa) {
         this.zaladowanie = zaladowanie;
         this.obecnaMasa = obecnaMasa;
         this.czy_wolne = true;
     }
+
     public synchronized boolean isCzy_wolne() {
         return czy_wolne;
     }
@@ -19,6 +18,7 @@ public class Pomocnicza {
     public synchronized void setCzy_wolne(boolean c) {
         czy_wolne = c;
     }
+
     public synchronized void setZaladowanie(int z) {
         zaladowanie = z;
     }

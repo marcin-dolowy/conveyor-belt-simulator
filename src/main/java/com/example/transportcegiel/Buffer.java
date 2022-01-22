@@ -22,9 +22,7 @@ public class Buffer {
     final Condition pelny = dostep.newCondition();
     final Condition przeciazony = dostep.newCondition();
 
-
     TranslateTransition translateTransition = new TranslateTransition();
-
     HelloController helloController;
 
     public Buffer(int N, int obecnaMasa, int udzwig, Pomocnicza pomocnicza, HelloController helloController) {
@@ -45,6 +43,7 @@ public class Buffer {
                     e.printStackTrace();
                 }
             }
+
             while (pomocnicza.getObecnaMasa() + elem > udzwig) {
                 try {
                     przeciazony.await();
@@ -54,7 +53,6 @@ public class Buffer {
             }
             licz++;
             pomocnicza.setObecnaMasa(pomocnicza.getObecnaMasa() + elem);
-            //pusty.signal();
         } finally {
             dostep.unlock();
         }
@@ -63,25 +61,12 @@ public class Buffer {
     public void pobierz(int elem) {
         dostep.lock();
         try {
-            /*if (licz == 0) {
-                try {
-                    pusty.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }*/
             pomocnicza.setObecnaMasa(pomocnicza.getObecnaMasa() - elem);
             pomocnicza.setZaladowanie(pomocnicza.getZaladowanie() + elem);
             licz--;
             pelny.signal();
             przeciazony.signal();
-
-            //Thread.sleep(rand.nextInt(1000) + 700);
-
-
             System.out.println("[T" + elem + "] >> " + pomocnicza.getZaladowanie() + ", " + pomocnicza.getObecnaMasa());
-/*        } catch (InterruptedException e) {
-            e.printStackTrace();*/
         } finally {
             dostep.unlock();
         }
@@ -91,10 +76,7 @@ public class Buffer {
         dostep.lock();
         try {
             pomocnicza.setZaladowanie(0);
-            //Thread.sleep((rand.nextInt(50) + 1));
             System.out.println("odjazd\n");
-/*        } catch (InterruptedException e) {
-            e.printStackTrace();*/
         } finally {
             dostep.unlock();
         }

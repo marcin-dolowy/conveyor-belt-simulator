@@ -30,35 +30,44 @@ public class Tasma extends Thread {
         translateTransition.setDuration(Duration.millis(1000));
         translateTransition.setByX(x);
         translateTransition.setNode(cegla);
-        translateTransition.setOnFinished(e -> { synchronized (this) { notify(); } });
-        Platform.runLater(() -> { translateTransition.play(); });
-        synchronized (this) { try { wait(); } catch (InterruptedException e) {} }
+        translateTransition.setOnFinished(e -> {
+            synchronized (this) {
+                notify();
+            }
+        });
+        Platform.runLater(() -> {
+            translateTransition.play();
+        });
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
+        }
         if (ktory_etap == 3) {
             Platform.runLater(() -> {
                 HelloApplication.root.getChildren().remove(cegla);
             });
             bufor.pobierz(masa);
-        }
-
-        else
-            etap(100, cegla, ktory_etap+1, masa);
+        } else
+            etap(100, cegla, ktory_etap + 1, masa);
     }
 
     public void run() {
         cegla = new Rectangle();
-        if(elem == 1) {
+        if (elem == 1) {
             cegla.setHeight(15);
             cegla.setWidth(20);
             cegla.setLayoutX(280);
             cegla.setLayoutY(318);
         }
-        if(elem == 2) {
+        if (elem == 2) {
             cegla.setHeight(30);
             cegla.setWidth(20);
             cegla.setLayoutX(280);
             cegla.setLayoutY(311);
         }
-        if(elem == 3) {
+        if (elem == 3) {
             cegla.setHeight(40);
             cegla.setWidth(25);
             cegla.setLayoutX(280);
@@ -68,12 +77,14 @@ public class Tasma extends Thread {
         Color black = Color.BLACK;
         cegla.setFill(orange);
         cegla.setStroke(black);
-        while (!pomocnicza.isCzy_wolne());
-        Platform.runLater(() -> { HelloApplication.root.getChildren().add(cegla); });
+        while (!pomocnicza.isCzy_wolne()) ;
+        Platform.runLater(() -> {
+            HelloApplication.root.getChildren().add(cegla);
+        });
+
         pomocnicza.setCzy_wolne(false);
         etap(20, cegla, 0, elem);
 
         helloController.pasekLadowania.setProgress((double) pomocnicza.getZaladowanie() / ((double) startApplication.getLadownosc()));
-
     }
 }

@@ -20,6 +20,7 @@ public class Pracownik extends Thread {
     Buffer bufor;
     Pomocnicza pomocnicza;
     Tasma tasma;
+
     TranslateTransition translateTransition;
     HelloController helloController;
     StartApplication startApplication;
@@ -33,7 +34,6 @@ public class Pracownik extends Thread {
         this.helloController = helloController;
         this.startApplication = startApplication;
     }
-
 
     public void animacja(int elem) {
         translateTransition = new TranslateTransition();
@@ -53,11 +53,11 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
-            bufor.wstaw(elem);
 
+            bufor.wstaw(elem);
 
             translateTransition.setDelay(Duration.millis(100));
             translateTransition.setToX(0);
@@ -75,10 +75,9 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
-
         }
 
         if (elem == 2) {
@@ -97,17 +96,16 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
-            bufor.wstaw(elem);
 
+            bufor.wstaw(elem);
 
             translateTransition.setDelay(Duration.millis(100));
             translateTransition.setToX(0);
             translateTransition.setToY(0);
             translateTransition.setDuration(Duration.millis(550));
-
             translateTransition.setNode(helloController.pracownik2);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
@@ -120,7 +118,7 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }
@@ -129,8 +127,8 @@ public class Pracownik extends Thread {
             translateTransition.setToX(91);
             translateTransition.setToY(-124);
             translateTransition.setDuration(Duration.millis(550));
-            bufor.wstaw(elem);
 
+            bufor.wstaw(elem);
 
             translateTransition.setNode(helloController.pracownik3);
             translateTransition.setOnFinished(e -> {
@@ -144,7 +142,7 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
 
@@ -164,7 +162,7 @@ public class Pracownik extends Thread {
             synchronized (this) {
                 try {
                     wait();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }
@@ -189,7 +187,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
 
@@ -210,7 +208,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
 
@@ -232,7 +230,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
 
@@ -254,7 +252,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -277,7 +275,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
                 translateTransition.setDelay(Duration.millis(1000));
@@ -296,7 +294,7 @@ public class Pracownik extends Thread {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -324,7 +322,6 @@ public class Pracownik extends Thread {
                 if (ladownosc - (pomocnicza.getZaladowanie() + pomocnicza.getObecnaMasa()) < 3) {
                     if (ladownosc - (pomocnicza.getZaladowanie() + pomocnicza.getObecnaMasa()) == 2) {
                         if (masa == 2) {
-                            //animacja(rand.nextInt(1) + 1);
                             animacja(2);
                             tasma = new Tasma(masa, bufor, pomocnicza, helloController, startApplication);
                             tasma.start();
@@ -342,7 +339,6 @@ public class Pracownik extends Thread {
                     tasma = new Tasma(masa, bufor, pomocnicza, helloController, startApplication);
                     tasma.start();
                 }
-
                 numer[nr] = 0;
             }
         }

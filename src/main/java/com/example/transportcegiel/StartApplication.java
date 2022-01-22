@@ -59,7 +59,6 @@ public class StartApplication {
         Pomocnicza pomocnicza = new Pomocnicza(0, 0);
         Buffer buf = new Buffer(maxNaTasmieTemp, 0, udzwigTemp, pomocnicza, helloController);
         Ciezarowka ciezarowka = new Ciezarowka(ladownoscTemp, buf, pomocnicza, helloController);
-        //TasmaTransportowa tasmaTransportowa = new TasmaTransportowa(30, 20, buf, pomocnicza);
 
         for (int i = 0; i < iloscPracownikow; i++) {
             Pracownik pracownik = new Pracownik(i, ladownoscTemp, buf, pomocnicza, helloController, this);
@@ -67,7 +66,6 @@ public class StartApplication {
         }
 
         ciezarowka.start();
-        //tasmaTransportowa.start();
 
         for (int i = 0; i < iloscPracownikow; i++) {
             pracownicy[i].start();

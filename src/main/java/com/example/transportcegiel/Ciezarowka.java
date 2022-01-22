@@ -6,7 +6,6 @@ import javafx.util.Duration;
 
 public class Ciezarowka extends Thread {
     public int ladownosc;
-    //public int zaladowanie = 0;
     public boolean koniec = false;
     Buffer bufor;
     Pomocnicza pomocnicza;
@@ -64,7 +63,6 @@ public class Ciezarowka extends Thread {
                     }
                 }
                 helloController.pasekLadowania.setProgress(0);
-
             }
         }
 
