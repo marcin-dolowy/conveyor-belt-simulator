@@ -211,7 +211,6 @@ public class Pracownik extends Thread {
                     } catch (InterruptedException ignored) {
                     }
                 }
-
             }
 
             if (nr == 1) {
@@ -344,4 +343,3 @@ public class Pracownik extends Thread {
         }
     }
 }
-

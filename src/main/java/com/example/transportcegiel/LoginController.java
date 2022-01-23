@@ -25,7 +25,7 @@ public class LoginController {
 
     @FXML
     void login() throws IOException {
-        if (txtUserName.getText().equals("admin") && txtPassword.getText().equals("admin123")) {
+        if (txtUserName.getText().equals("admin") && txtPassword.getText().equals("admin")) {
             lblStatus.setText("Login successful.");
 
             Stage stage = new Stage();
