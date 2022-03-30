@@ -17,16 +17,16 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Button>
-        <Label fx:id="lblStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="286.0" prefHeight="18.0" prefWidth="200.0">
+        <Label fx:id="labelStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="286.0" prefHeight="18.0" prefWidth="200.0">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font></Label>
-        <Label alignment="CENTER" layoutY="14.0" prefHeight="31.0" prefWidth="400.0" text="SYMULATOR TAŚMY TRANSPORTOWEJ">
+        <Label alignment="CENTER" layoutY="14.0" prefHeight="31.0" prefWidth="400.0" text="CONVEYOR BELT SIMULATOR">
             <font>
                 <Font size="21.0" />
             </font>
         </Label>
-        <Label layoutX="110.0" layoutY="58.0" text="Zaloguj się do aplikacji">
+        <Label layoutX="121.0" layoutY="58.0" text="Login to application">
             <font>
                 <Font size="18.0" />
             </font>

@@ -1,6 +1,5 @@
 package com.example.transportcegiel;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.ProgressBar;
@@ -9,33 +8,33 @@ import javafx.scene.control.TextField;
 public class HelloController {
 
     @FXML
-    public Group ciezarowka;
+    public Group truck;
 
     @FXML
-    public TextField ladownoscTF;
+    public TextField truckCapacityTF;
 
     @FXML
-    public TextField maxIloscTF;
+    public TextField maxBrickAmountTF;
 
     @FXML
-    public TextField udzwigTF;
+    public TextField conveyorBeltCapacity;
 
     @FXML
-    public Group pracownik1;
+    public Group worker1;
 
     @FXML
-    public Group pracownik2;
+    public Group worker2;
 
     @FXML
-    public Group pracownik3;
+    public Group worker3;
 
     @FXML
-    public ProgressBar pasekLadowania;
+    public ProgressBar loadingBar;
 
     StartApplication startApplication = new StartApplication();
 
     @FXML
-    void startSimulation(ActionEvent event) {
+    void startSimulation() {
         startApplication.StartSimulation(this);
     }
 

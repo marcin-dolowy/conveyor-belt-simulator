@@ -5,75 +5,75 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class StartApplication {
-    int ladownosc = 0;
-    int udzwig = 0;
-    int maxNaTasmie = 0;
+    int truckCapacity = 0;
+    int conveyorBeltCapacity = 0;
+    int maxBrickAmount = 0;
+
+    public int getTruckCapacity() {
+        return truckCapacity;
+    }
 
     public void StartSimulation(HelloController helloController) {
         try (InputStream inputStream = StartApplication.class.getClassLoader().getResourceAsStream("data.properties")) {
             Properties properties = new Properties();
             if (inputStream == null) {
-                System.out.println("Nie znaleziono pliku");
+                System.out.println("File not found.");
             } else {
                 properties.load(inputStream);
-                ladownosc = Integer.parseInt(properties.getProperty("ladownosc"));
-                udzwig = Integer.parseInt(properties.getProperty("udzwig"));
-                maxNaTasmie = Integer.parseInt(properties.getProperty("maxNaTasmie"));
+                truckCapacity = Integer.parseInt(properties.getProperty("truckCapacity"));
+                conveyorBeltCapacity = Integer.parseInt(properties.getProperty("conveyorBeltCapacity"));
+                maxBrickAmount = Integer.parseInt(properties.getProperty("maxBrickAmount"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String StringLadownosc = helloController.ladownoscTF.getText();
-        String StringUdzwig = helloController.udzwigTF.getText();
-        String StringMaxNaTasmie = helloController.maxIloscTF.getText();
+        String stringTruckCapacity = helloController.truckCapacityTF.getText();
+        String stringConveyorBeltCapacity = helloController.conveyorBeltCapacity.getText();
+        String stringMaxBrickAmount = helloController.maxBrickAmountTF.getText();
 
-        int ladownoscTemp;
-        int udzwigTemp;
-        int maxNaTasmieTemp;
+        int tempTruckCapacity;
+        int tempConveyorBeltCapacity;
+        int tempMaxBrickAmount;
 
-        if (!StringLadownosc.isEmpty()) {
-            ladownoscTemp = Integer.parseInt(StringLadownosc);
+        if (!stringTruckCapacity.isEmpty()) {
+            tempTruckCapacity = Integer.parseInt(stringTruckCapacity);
         } else {
-            ladownoscTemp = ladownosc;
-            helloController.ladownoscTF.setText(ladownoscTemp + "");
+            tempTruckCapacity = truckCapacity;
+            helloController.truckCapacityTF.setText(tempTruckCapacity + "");
         }
 
-        if (!StringLadownosc.isEmpty()) {
-            udzwigTemp = Integer.parseInt(StringUdzwig);
-
-        } else {
-            udzwigTemp = udzwig;
-            helloController.udzwigTF.setText(Integer.toString(udzwigTemp));
-        }
-        if (!StringLadownosc.isEmpty()) {
-            maxNaTasmieTemp = Integer.parseInt(StringMaxNaTasmie);
+        if (!stringTruckCapacity.isEmpty()) {
+            tempConveyorBeltCapacity = Integer.parseInt(stringConveyorBeltCapacity);
 
         } else {
-            maxNaTasmieTemp = maxNaTasmie;
-            helloController.maxIloscTF.setText(Integer.toString(maxNaTasmieTemp));
+            tempConveyorBeltCapacity = conveyorBeltCapacity;
+            helloController.conveyorBeltCapacity.setText(Integer.toString(tempConveyorBeltCapacity));
+        }
+        if (!stringTruckCapacity.isEmpty()) {
+            tempMaxBrickAmount = Integer.parseInt(stringMaxBrickAmount);
+
+        } else {
+            tempMaxBrickAmount = maxBrickAmount;
+            helloController.maxBrickAmountTF.setText(Integer.toString(tempMaxBrickAmount));
         }
 
-        int iloscPracownikow = 3;
-        Pracownik[] pracownicy = new Pracownik[iloscPracownikow];
-        Pomocnicza pomocnicza = new Pomocnicza(0, 0);
-        Buffer buf = new Buffer(maxNaTasmieTemp, 0, udzwigTemp, pomocnicza, helloController);
-        Ciezarowka ciezarowka = new Ciezarowka(ladownoscTemp, buf, pomocnicza, helloController);
+        int numberOfWorkers = 3;
+        Worker[] workers = new Worker[numberOfWorkers];
+        Parameters parameters = new Parameters(0, 0);
+        Buffer buffer = new Buffer(tempMaxBrickAmount, 0, tempConveyorBeltCapacity, parameters, helloController);
+        Truck truck = new Truck(tempTruckCapacity, buffer, parameters, helloController);
 
-        for (int i = 0; i < iloscPracownikow; i++) {
-            Pracownik pracownik = new Pracownik(i, ladownoscTemp, buf, pomocnicza, helloController, this);
-            pracownicy[i] = pracownik;
+        for (int i = 0; i < numberOfWorkers; i++) {
+            Worker worker = new Worker(i, tempTruckCapacity, buffer, parameters, helloController, this);
+            workers[i] = worker;
         }
 
-        ciezarowka.start();
+        truck.start();
 
-        for (int i = 0; i < iloscPracownikow; i++) {
-            pracownicy[i].start();
+        for (int i = 0; i < numberOfWorkers; i++) {
+            workers[i].start();
         }
-        this.ladownosc = ladownoscTemp;
-    }
-
-    public int getLadownosc() {
-        return ladownosc;
+        this.truckCapacity = tempTruckCapacity;
     }
 }

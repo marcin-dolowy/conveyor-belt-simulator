@@ -15,7 +15,7 @@ import static com.example.transportcegiel.HelloApplication.root;
 public class LoginController {
 
     @FXML
-    private Label lblStatus;
+    private Label labelStatus;
 
     @FXML
     private PasswordField txtPassword;
@@ -26,17 +26,17 @@ public class LoginController {
     @FXML
     void login() throws IOException {
         if (txtUserName.getText().equals("admin") && txtPassword.getText().equals("admin")) {
-            lblStatus.setText("Login successful.");
+            labelStatus.setText("Login successful.");
 
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
             root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            stage.setTitle("Symulator Tasmy Transportowej");
+            stage.setTitle("Conveyor Belt Simulator");
             stage.setScene(scene);
             stage.show();
         } else {
-            lblStatus.setText("Incorrect username or password.");
+            labelStatus.setText("Incorrect username or password.");
         }
     }
 }

@@ -1,84 +1,75 @@
 package com.example.transportcegiel;
 
-import javafx.animation.TranslateTransition;
-
-import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Buffer {
-    public Random rand = new Random();
-    public int wej = 0;
-    public int wyj = 0;
-    public int licz = 0;
-    public int obecnaMasa;
-    public int udzwig;
-    public int elem;
+    public int count = 0;
+    public int currentWeight;
+    public int conveyorBeltCapacity;
     int N;
-    Pomocnicza pomocnicza;
-    final Lock dostep = new ReentrantLock();
-    final Condition pusty = dostep.newCondition();
-    final Condition pelny = dostep.newCondition();
-    final Condition przeciazony = dostep.newCondition();
+    Parameters parameters;
+    final Lock access = new ReentrantLock();
+    final Condition full = access.newCondition();
+    final Condition overloaded = access.newCondition();
 
-    TranslateTransition translateTransition = new TranslateTransition();
     HelloController helloController;
 
-    public Buffer(int N, int obecnaMasa, int udzwig, Pomocnicza pomocnicza, HelloController helloController) {
+    public Buffer(int N, int currentWeight, int conveyorBeltCapacity, Parameters parameters, HelloController helloController) {
         this.N = N;
-        this.obecnaMasa = obecnaMasa;
-        this.udzwig = udzwig;
-        this.pomocnicza = pomocnicza;
+        this.currentWeight = currentWeight;
+        this.conveyorBeltCapacity = conveyorBeltCapacity;
+        this.parameters = parameters;
         this.helloController = helloController;
     }
 
-    public void wstaw(int elem) {
-        dostep.lock();
+    public void insertToTruck(int elem) {
+        access.lock();
         try {
-            if (licz == N) {
+            if (count == N) {
                 try {
-                    pelny.await();
+                    full.await();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            while (pomocnicza.getObecnaMasa() + elem > udzwig) {
+            while (parameters.getCurrentCapacity() + elem > conveyorBeltCapacity) {
                 try {
-                    przeciazony.await();
+                    overloaded.await();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            licz++;
-            pomocnicza.setObecnaMasa(pomocnicza.getObecnaMasa() + elem);
+            count++;
+            parameters.setCurrentCapacity(parameters.getCurrentCapacity() + elem);
         } finally {
-            dostep.unlock();
+            access.unlock();
         }
     }
 
-    public void pobierz(int elem) {
-        dostep.lock();
+    public void load(int elem) {
+        access.lock();
         try {
-            pomocnicza.setObecnaMasa(pomocnicza.getObecnaMasa() - elem);
-            pomocnicza.setZaladowanie(pomocnicza.getZaladowanie() + elem);
-            licz--;
-            pelny.signal();
-            przeciazony.signal();
-            System.out.println("[T" + elem + "] >> " + pomocnicza.getZaladowanie() + ", " + pomocnicza.getObecnaMasa());
+            parameters.setCurrentCapacity(parameters.getCurrentCapacity() - elem);
+            parameters.setTruckLoad(parameters.getTruckLoad() + elem);
+            count--;
+            full.signal();
+            overloaded.signal();
+            System.out.println("[T" + elem + "] >> " + parameters.getTruckLoad() + ", " + parameters.getCurrentCapacity());
         } finally {
-            dostep.unlock();
+            access.unlock();
         }
     }
 
-    public void odjazd() {
-        dostep.lock();
+    public void truckDeparture() {
+        access.lock();
         try {
-            pomocnicza.setZaladowanie(0);
-            System.out.println("odjazd\n");
+            parameters.setTruckLoad(0);
+            System.out.println("Departure\n");
         } finally {
-            dostep.unlock();
+            access.unlock();
         }
     }
 }

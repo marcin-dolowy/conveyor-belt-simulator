@@ -9,47 +9,45 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
 
-public class Pracownik extends Thread {
-    private int nr;
-    public static volatile boolean[] wybieranie = new boolean[]{false, false, false};
-    public static volatile Integer[] numer = new Integer[]{0, 0, 0};
-    public int masa;
-    public int ladownosc;
-    boolean koniec = false;
-    Random rand = new Random();
-    Buffer bufor;
-    Pomocnicza pomocnicza;
-    Tasma tasma;
+public class Worker extends Thread {
+    private final int number;
+    public static volatile boolean[] selection = new boolean[]{false, false, false};
+    public static volatile Integer[] numberArray = new Integer[]{0, 0, 0};
+    public int weight;
+    public int truckCapacity;
+    boolean quit = false;
+    Random random = new Random();
+    Buffer buffer;
+    Parameters parameters;
+    ConveyorBelt conveyorBelt;
 
     TranslateTransition translateTransition;
     HelloController helloController;
     StartApplication startApplication;
 
-    public Pracownik(int nr, int ladownosc, Buffer bufor, Pomocnicza pomocnicza, HelloController helloController, StartApplication startApplication) {
-        super("P" + nr + 1);
-        this.nr = nr;
-        this.ladownosc = ladownosc;
-        this.bufor = bufor;
-        this.pomocnicza = pomocnicza;
+    public Worker(int number, int truckCapacity, Buffer buffer, Parameters parameters, HelloController helloController, StartApplication startApplication) {
+        super("P" + number + 1);
+        this.number = number;
+        this.truckCapacity = truckCapacity;
+        this.buffer = buffer;
+        this.parameters = parameters;
         this.helloController = helloController;
         this.startApplication = startApplication;
     }
 
-    public void animacja(int elem) {
+    public void animation(int elem) {
         translateTransition = new TranslateTransition();
         if (elem == 1) {
             translateTransition.setToX(91);
             translateTransition.setToY(124);
             translateTransition.setDuration(Duration.millis(550));
-            translateTransition.setNode(helloController.pracownik1);
+            translateTransition.setNode(helloController.worker1);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -57,21 +55,19 @@ public class Pracownik extends Thread {
                 }
             }
 
-            bufor.wstaw(elem);
+            buffer.insertToTruck(elem);
 
             translateTransition.setDelay(Duration.millis(100));
             translateTransition.setToX(0);
             translateTransition.setToY(0);
             translateTransition.setDuration(Duration.millis(550));
-            translateTransition.setNode(helloController.pracownik1);
+            translateTransition.setNode(helloController.worker1);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -84,15 +80,13 @@ public class Pracownik extends Thread {
             translateTransition.setToX(91);
             translateTransition.setToY(0);
             translateTransition.setDuration(Duration.millis(550));
-            translateTransition.setNode(helloController.pracownik2);
+            translateTransition.setNode(helloController.worker2);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -100,21 +94,19 @@ public class Pracownik extends Thread {
                 }
             }
 
-            bufor.wstaw(elem);
+            buffer.insertToTruck(elem);
 
             translateTransition.setDelay(Duration.millis(100));
             translateTransition.setToX(0);
             translateTransition.setToY(0);
             translateTransition.setDuration(Duration.millis(550));
-            translateTransition.setNode(helloController.pracownik2);
+            translateTransition.setNode(helloController.worker2);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -128,17 +120,15 @@ public class Pracownik extends Thread {
             translateTransition.setToY(-124);
             translateTransition.setDuration(Duration.millis(550));
 
-            bufor.wstaw(elem);
+            buffer.insertToTruck(elem);
 
-            translateTransition.setNode(helloController.pracownik3);
+            translateTransition.setNode(helloController.worker3);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -150,15 +140,13 @@ public class Pracownik extends Thread {
             translateTransition.setToX(0);
             translateTransition.setToY(0);
             translateTransition.setDuration(Duration.millis(550));
-            translateTransition.setNode(helloController.pracownik3);
+            translateTransition.setNode(helloController.worker3);
             translateTransition.setOnFinished(e -> {
                 synchronized (this) {
                     notify();
                 }
             });
-            Platform.runLater(() -> {
-                translateTransition.play();
-            });
+            Platform.runLater(translateTransition::play);
             synchronized (this) {
                 try {
                     wait();
@@ -169,21 +157,19 @@ public class Pracownik extends Thread {
     }
 
     public void run() {
-        while (!koniec) {
+        while (!quit) {
             translateTransition = new TranslateTransition();
-            if (nr == 0) {
+            if (number == 0) {
                 translateTransition.setToX(-91);
                 translateTransition.setToY(124);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
-                translateTransition.setNode(helloController.pracownik1);
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
+                translateTransition.setNode(helloController.worker1);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -191,20 +177,17 @@ public class Pracownik extends Thread {
                     }
                 }
 
-
                 translateTransition.setDelay(Duration.millis(1000));
                 translateTransition.setToX(0);
                 translateTransition.setToY(0);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
-                translateTransition.setNode(helloController.pracownik1);
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
+                translateTransition.setNode(helloController.worker1);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -213,19 +196,17 @@ public class Pracownik extends Thread {
                 }
             }
 
-            if (nr == 1) {
+            if (number == 1) {
                 translateTransition.setToX(-91);
                 translateTransition.setToY(0);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
-                translateTransition.setNode(helloController.pracownik2);
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
+                translateTransition.setNode(helloController.worker2);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -237,17 +218,15 @@ public class Pracownik extends Thread {
                 translateTransition.setDelay(Duration.millis(1000));
                 translateTransition.setToX(0);
                 translateTransition.setToY(0);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
 
-                translateTransition.setNode(helloController.pracownik2);
+                translateTransition.setNode(helloController.worker2);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -256,21 +235,19 @@ public class Pracownik extends Thread {
                 }
             }
 
-            if (nr == 2) {
+            if (number == 2) {
                 translateTransition.setToX(-91);
                 translateTransition.setToY(-124);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
 
 
-                translateTransition.setNode(helloController.pracownik3);
+                translateTransition.setNode(helloController.worker3);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -280,16 +257,14 @@ public class Pracownik extends Thread {
                 translateTransition.setDelay(Duration.millis(1000));
                 translateTransition.setToX(0);
                 translateTransition.setToY(0);
-                translateTransition.setDuration(Duration.millis(rand.nextInt(1000) + 500));
-                translateTransition.setNode(helloController.pracownik3);
+                translateTransition.setDuration(Duration.millis(random.nextInt(1000) + 500));
+                translateTransition.setNode(helloController.worker3);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
@@ -298,47 +273,47 @@ public class Pracownik extends Thread {
                 }
             }
 
-            if (pomocnicza.isCzy_wolne()) {
+            if (parameters.isFree()) {
 
-                wybieranie[nr] = true;
-                numer[nr] = Collections.max(Arrays.asList(numer)) + 1;
-                wybieranie[nr] = false;
+                selection[number] = true;
+                numberArray[number] = Collections.max(Arrays.asList(numberArray)) + 1;
+                selection[number] = false;
 
                 int j;
-                for (j = 0; j < numer.length; ++j) {
-                    while (wybieranie[j]) {
+                for (j = 0; j < numberArray.length; ++j) {
+                    while (selection[j]) {
                     }
 
-                    while (numer[j] != 0 && numer[j] < numer[nr]) {
+                    while (numberArray[j] != 0 && numberArray[j] < numberArray[number]) {
                     }
 
-                    if (Objects.equals(numer[j], numer[nr])) {
-                        while (numer[j] != 0 && j < nr) {
+                    if (Objects.equals(numberArray[j], numberArray[number])) {
+                        while (numberArray[j] != 0 && j < number) {
                         }
                     }
                 }
-                masa = nr + 1;
-                if (ladownosc - (pomocnicza.getZaladowanie() + pomocnicza.getObecnaMasa()) < 3) {
-                    if (ladownosc - (pomocnicza.getZaladowanie() + pomocnicza.getObecnaMasa()) == 2) {
-                        if (masa == 2) {
-                            animacja(2);
-                            tasma = new Tasma(masa, bufor, pomocnicza, helloController, startApplication);
-                            tasma.start();
+                weight = number + 1;
+                if (truckCapacity - (parameters.getTruckLoad() + parameters.getCurrentCapacity()) < 3) {
+                    if (truckCapacity - (parameters.getTruckLoad() + parameters.getCurrentCapacity()) == 2) {
+                        if (weight == 2) {
+                            animation(2);
+                            conveyorBelt = new ConveyorBelt(weight, buffer, parameters, helloController, startApplication);
+                            conveyorBelt.start();
                         }
                     }
-                    if (ladownosc - (pomocnicza.getZaladowanie() + pomocnicza.getObecnaMasa()) == 1) {
-                        if (masa == 1) {
-                            animacja(1);
-                            tasma = new Tasma(masa, bufor, pomocnicza, helloController, startApplication);
-                            tasma.start();
+                    if (truckCapacity - (parameters.getTruckLoad() + parameters.getCurrentCapacity()) == 1) {
+                        if (weight == 1) {
+                            animation(1);
+                            conveyorBelt = new ConveyorBelt(weight, buffer, parameters, helloController, startApplication);
+                            conveyorBelt.start();
                         }
                     }
                 } else {
-                    animacja(masa);
-                    tasma = new Tasma(masa, bufor, pomocnicza, helloController, startApplication);
-                    tasma.start();
+                    animation(weight);
+                    conveyorBelt = new ConveyorBelt(weight, buffer, parameters, helloController, startApplication);
+                    conveyorBelt.start();
                 }
-                numer[nr] = 0;
+                numberArray[number] = 0;
             }
         }
     }

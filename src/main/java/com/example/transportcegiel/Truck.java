@@ -4,65 +4,61 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.util.Duration;
 
-public class Ciezarowka extends Thread {
-    public int ladownosc;
-    public boolean koniec = false;
-    Buffer bufor;
-    Pomocnicza pomocnicza;
+public class Truck extends Thread {
+    public int truckCapacity;
+    public boolean quit = false;
+    Buffer buffer;
+    Parameters parameters;
     HelloController helloController;
 
-    public Ciezarowka(int ladownosc, Buffer bufor, Pomocnicza pomocnicza, HelloController helloController) {
-        this.ladownosc = ladownosc;
-        this.bufor = bufor;
-        this.pomocnicza = pomocnicza;
+    public Truck(int truckCapacity, Buffer buffer, Parameters parameters, HelloController helloController) {
+        this.truckCapacity = truckCapacity;
+        this.buffer = buffer;
+        this.parameters = parameters;
         this.helloController = helloController;
     }
 
     public void run() {
-        while (!koniec) {
-            if (pomocnicza.getZaladowanie() == ladownosc) {
+        while (!quit) {
+            if (parameters.getTruckLoad() == truckCapacity) {
 
-                bufor.odjazd();
+                buffer.truckDeparture();
 
                 TranslateTransition translateTransition = new TranslateTransition();
                 translateTransition.setToX(350);
                 translateTransition.setToY(250);
                 translateTransition.setDuration(Duration.millis(1000));
-                translateTransition.setNode(helloController.ciezarowka);
+                translateTransition.setNode(helloController.truck);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
 
                 translateTransition.setToX(0);
                 translateTransition.setToY(0);
                 translateTransition.setDuration(Duration.millis(0.1));
-                translateTransition.setNode(helloController.ciezarowka);
+                translateTransition.setNode(helloController.truck);
                 translateTransition.setOnFinished(e -> {
                     synchronized (this) {
                         notify();
                     }
                 });
-                Platform.runLater(() -> {
-                    translateTransition.play();
-                });
+                Platform.runLater(translateTransition::play);
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
-                helloController.pasekLadowania.setProgress(0);
+                helloController.loadingBar.setProgress(0);
             }
         }
 

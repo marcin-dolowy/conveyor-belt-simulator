@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class LoginApplication extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

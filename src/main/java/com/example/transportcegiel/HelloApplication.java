@@ -16,7 +16,7 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         root = fxmlLoader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Symulator Tasmy Transportowej");
+        stage.setTitle("Conveyor Belt Simulator");
         stage.setScene(scene);
         stage.show();
     }
